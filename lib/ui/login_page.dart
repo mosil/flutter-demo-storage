@@ -9,6 +9,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _passwordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,36 +25,55 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(
           16.0,
         ),
-        child: Column(
-          children: <Widget>[
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Input your email',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'Input your email',
+                ),
+                keyboardType: TextInputType.emailAddress,
               ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Password',
-                hintText: 'Input your password',
-              ),
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: _passwordVisible,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Input your password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
                   ),
-                );
-              },
-              child: const Text('Login'),
-            ),
-          ],
+                ),
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                },
+                child: const Text('Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );
