@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:storage/model/auth_provider.dart';
 import 'package:storage/ui/home_page.dart';
 
@@ -21,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _authProvider = context.read<AuthProvider>();
     super.initState();
   }
 
@@ -47,9 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Email is required';
-                  }
+                  // TODO: add email require
                   return null;
                 },
               ),
@@ -74,9 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password is required';
-                  }
+                  // TODO: add password require
                 },
               ),
               const SizedBox(
@@ -84,10 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  }
-                  await _authProvider.login(_emailController.text);
+                  // TODO: add check and login
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

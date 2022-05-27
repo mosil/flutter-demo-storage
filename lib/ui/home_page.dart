@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:storage/model/auth_provider.dart';
 import 'package:storage/model/task_model.dart';
 import 'package:storage/model/task_provider.dart';
-import 'package:storage/ui/splash_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,14 +11,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _taskController = TextEditingController();
-  late AuthProvider _authProvider;
-  late TaskProvider _provider;
+  final TaskProvider _provider = TaskProvider();
 
   @override
   void initState() {
     super.initState();
-    _authProvider = context.read<AuthProvider>();
-    _provider = context.read<TaskProvider>();
     _provider.init();
   }
 
@@ -33,13 +27,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              _authProvider.logout();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SplashPage(),
-                ),
-              );
+              // TODO: logout
             },
             icon: const Icon(Icons.logout),
           ),
@@ -52,9 +40,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Hi ${_authProvider.email}',
-              style: const TextStyle(
+            const Text(
+              'Hi {email}',
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
