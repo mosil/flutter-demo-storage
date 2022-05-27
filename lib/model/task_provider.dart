@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:storage/model/task_model.dart';
 
-class TaskProvider {
+class TaskProvider extends ChangeNotifier {
   List<TaskModel> list = <TaskModel>[];
 
   void init() {

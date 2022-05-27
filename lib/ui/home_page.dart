@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:storage/model/auth_provider.dart';
 import 'package:storage/model/task_model.dart';
 import 'package:storage/model/task_provider.dart';
+import 'package:storage/ui/splash_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,12 +14,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _taskController = TextEditingController();
-  final TaskProvider _provider = TaskProvider();
+  late AuthProvider _authProvider;
+  late TaskProvider _provider;
 
   @override
   void initState() {
-    _provider.init();
     super.initState();
+    _authProvider = context.read<AuthProvider>();
+    _provider = context.read<TaskProvider>();
+    _provider.init();
   }
 
   @override
@@ -25,7 +31,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home Page'),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+          IconButton(
+            onPressed: () {
+              _authProvider.logout();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SplashPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
       body: Container(
@@ -35,9 +52,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Hi {email}',
-              style: TextStyle(
+            Text(
+              'Hi ${_authProvider.email}',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
