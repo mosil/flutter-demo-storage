@@ -21,8 +21,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _authProvider = context.read<AuthProvider>();
     super.initState();
+    _authProvider = context.read<AuthProvider>();
   }
 
   @override
