@@ -20,8 +20,9 @@ class AuthProvider extends ChangeNotifier {
     prefs.setString(AppKey.kEmail, email);
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     email = '';
     prefs.setString(AppKey.kEmail, '');
+    return true;
   }
 }
