@@ -6,6 +6,7 @@ import 'package:storage/database_helper.dart';
 import 'package:storage/model/task_model.dart';
 
 class TaskProvider extends ChangeNotifier {
+  TextEditingController taskController = TextEditingController();
   List<TaskModel> list = <TaskModel>[];
 
   Future<void> init() async {
@@ -24,9 +25,14 @@ class TaskProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> add(String title) async {
+  Future<void> add() async {
+    String title = taskController.text.trim();
+    if (title.isEmpty) {
+      return;
+    }
     int id = await DatabaseHelper.instance.insert(TaskModel(title: title));
-    list.add(TaskModel(id: id, title: title));
+    list.insert(0, TaskModel(id: id, title: title));
+    taskController.text = '';
     notifyListeners();
   }
 

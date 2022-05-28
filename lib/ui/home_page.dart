@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _taskController = TextEditingController();
   late AuthProvider _authProvider;
 
   @override
@@ -68,15 +67,12 @@ class _HomePageState extends State<HomePage> {
                         decoration: const InputDecoration(
                           hintText: 'Enter your task',
                         ),
-                        controller: _taskController,
+                        controller: provider.taskController,
                       ),
                     ),
                     IconButton(
                       onPressed: () {
-                        String title = _taskController.text.trim();
-                        if (title.isNotEmpty) {
-                          provider.add(title);
-                        }
+                        provider.add();
                       },
                       icon: const Icon(Icons.add),
                     ),
@@ -103,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                 trailing: IconButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
-                                    provider.delete(task);
+                                    _showDeleteDialog(context, provider, task);
                                   },
                                 ),
                               );
@@ -116,6 +112,49 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+
+  void _showDeleteDialog(
+    BuildContext context,
+    TaskProvider provider,
+    TaskModel task,
+  ) {
+    showDialog(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Delete Task: ${task.title}'),
+        content: const Text('Are you sure?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text(
+              'cancel',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 15,
+                fontFamily: 'NotoSansCJKtc',
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              provider.delete(task);
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text(
+              'ok',
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'NotoSansCJKtc',
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

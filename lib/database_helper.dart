@@ -52,5 +52,7 @@ class DatabaseHelper {
   Future<void> clear() async {
     Database db = await instance.database;
     await db.rawQuery('DELETE FROM $_table');
+    await db.update('sqlite_sequence', {'seq': 0},
+        where: 'name = ?', whereArgs: [_table]);
   }
 }
